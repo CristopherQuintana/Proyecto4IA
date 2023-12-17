@@ -14,15 +14,21 @@ public class FitnessCalc {
 
     public int getFitness(Individual individual) {
         char movements[] = individual.genes;
+        int totalMovements = individual.size();
         if (marioY == -1)
             return Integer.MIN_VALUE;
 
-        for (char movement : movements) {
+        for (int i = 0; i < totalMovements; i++) {
+            char movement = movements[i];
             int move = performMovement(movement);
-            if(move == 2)
+
+            if (move == 2) {
                 return 100 * marioX - 200;
-            else if(move == 4)
-                return 100 * (world[0].length - 1) - 200;
+            } else if (move == 4) {
+                // Calcula la cantidad de movimientos restantes
+                int movementsRemaining = totalMovements - i;
+                return 100 * (world[0].length - 1) - 200 * movementsRemaining;
+            }
         }
         // Calcula el fitness basado en la posición final de Mario
         return 100 * marioX;
